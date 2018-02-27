@@ -1,0 +1,26 @@
+PLAYING THE FISHES VIDEOS IN ROS 
+
+TAB #1 
+Start a ros core: 
+
+cd catkin_ws
+roscore
+
+TAB #2 
+Play the rosbag: (Be in directory where bag file is, ie desktop) 
+
+rosbag play --clock -l testfish_dark.bag 
+
+TAB #3
+View the rosbag: (In desktop, or wherever rosbag is playing) 
+
+rostopic list 
+/clock
+/rosout
+/rosout_agg
+/usb_cam/image_raw
+
+rosrun image_view image_view image:=/usb_cam/image_raw 
+
+Video will now play on screen 
+

@@ -61,12 +61,3 @@ for (i, c) in enumerate(cnts):
     cv2.waitKey(0) 
 
 
-
-
-
-
-
-
-
-
-
