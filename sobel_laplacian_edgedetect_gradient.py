@@ -47,7 +47,7 @@ sobelCombined = cv2.bitwise_or(sobelX, sobelY)
 cv2.imshow("Sobel X", sobelX)
 cv2.imshow("Sobel Y", sobelY) 
 cv2.imshow("Sobel Combined", sobelCombined) 
-
+cv2.waitKey(0) 
 
 
 
