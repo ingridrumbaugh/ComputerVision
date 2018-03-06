@@ -24,14 +24,19 @@ while(True):
     ret, frame = cap.read() 
     height, width, channels = frame.shape
     # starty:endy   startx:endx
-    cropped = frame[height/4:(3*height)/4, 0, width] 
-    
+    starty = height/8
+    endy   = (7*height)/8
+    startx = 0
+    endx   = width 
+    # Show both the cropped version and the regular version of the frame
+    cropped = frame[starty:endy, startx:endx]
     gray = cv2.cvtColor(cropped, cv2.COLOR_BGR2GRAY) 
     # blur the image first 
     gray = cv2.GaussianBlur(gray, (5, 5), 0) 
     
     # black out everything except the fish 
     fgmask = fgbg.apply(cropped) 
+    
     finalframe = cv2.bitwise_and(cropped, cropped, mask = fgmask)
     chans = cv2.split(finalframe) 
     
@@ -43,15 +48,14 @@ while(True):
         plt.plot(hist, color = color) 
         plt.xlim([0, 256]) 
     '''
-    cv2.imshow("Mask", finalframe) 
+    cv2.imshow("Frame", finalframe) 
+    
     if cv2.waitKey(10) & 0xFF == ord('q'):
         break 
     # plt.clf() 
     
 cap.release()
 cv2.destroyAllWindows()
-
-# gray = cv2.bitwise_and(gray,fgmask)
 
 
 
