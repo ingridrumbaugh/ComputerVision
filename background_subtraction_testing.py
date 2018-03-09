@@ -10,6 +10,11 @@ Some code taken from:
 https://stackoverflow.com/questions/43099734/combining-cv2-imshow-with-matplotlib-plt-show-in-real-time
 '''
 
+matrix = np.zeros((75, 75), np.float32) 
+green = (0, 255, 0) 
+
+#                  start x/y  end x/y
+# cv2.rectangle(image, (500, 500), (575, 575), green)
 fig = plt.figure()
 plt.ion()
 plt.title("'Flattened' Color Histogram")
@@ -20,6 +25,8 @@ cap = cv2.VideoCapture(0)
 fgbg = cv2.createBackgroundSubtractorMOG2()
 # channels for the histogram 
 colors = ('b', 'g', 'r') 
+
+bool isFish 
 
 while(True):
    
