@@ -26,7 +26,7 @@ fgbg = cv2.createBackgroundSubtractorMOG2()
 # channels for the histogram 
 colors = ('b', 'g', 'r') 
 
-bool isFish 
+# bool isFish 
 
 while(True):
    
@@ -63,7 +63,8 @@ while(True):
     chans = cv2.split(finalframe) 
     # show the image 
     cv2.imshow("Frame", finalframe) 
-    
+        
+        
     # Draw the histogram 
     for (chan, color) in zip(chans, colors):
         hist = cv2.calcHist([chan],[0], None, [256], [2,245])
