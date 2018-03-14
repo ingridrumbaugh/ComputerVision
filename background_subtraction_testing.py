@@ -1,6 +1,5 @@
 import matplotlib
 matplotlib.use('TkAgg') 
-
 from matplotlib import pyplot as plt 
 import numpy as np
 import argparse
@@ -10,11 +9,6 @@ Some code taken from:
 https://stackoverflow.com/questions/43099734/combining-cv2-imshow-with-matplotlib-plt-show-in-real-time
 '''
 
-matrix = np.zeros((75, 75), np.float32) 
-green = (0, 255, 0) 
-
-#                  start x/y  end x/y
-# cv2.rectangle(image, (500, 500), (575, 575), green)
 fig = plt.figure()
 plt.ion()
 plt.title("'Flattened' Color Histogram")
@@ -26,7 +20,12 @@ fgbg = cv2.createBackgroundSubtractorMOG2()
 # channels for the histogram 
 colors = ('b', 'g', 'r') 
 
-# bool isFish 
+matrix = np.zeros((75, 75), np.float32) 
+green = (0, 255, 0) 
+
+#                    start x/y    end x/y
+
+isFish = True
 
 while(True):
    
@@ -37,7 +36,7 @@ while(True):
     img = img.reshape(fig.canvas.get_width_height()[::-1]+(3,))
     # img is rgb, conver to opencv bgr 
     img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
-    
+
     cv2.imshow("Plot",img) 
     
     ret, frame = cap.read() 
@@ -61,10 +60,16 @@ while(True):
     cv2.imshow("Thresh", thresh) 
     # break up channels for the histogram 
     chans = cv2.split(finalframe) 
+    
+    for y in range(0, height):
+        for x in range(0, width):
+            pt1 = (int(x), int(y))
+            pt2 = (int(x+50), int(y+50))
+            cv2.rectangle(finalframe, pt1, pt2, green)
+        
     # show the image 
     cv2.imshow("Frame", finalframe) 
-        
-        
+    
     # Draw the histogram 
     for (chan, color) in zip(chans, colors):
         hist = cv2.calcHist([chan],[0], None, [256], [2,245])
