@@ -21,22 +21,27 @@ cv2.imshow("Gaussian Thresh", thresh)
 cv2.waitKey(0) 
 '''
 # Split the image into 3 channels: RGB 
-chans = cv2.split(image)
-colors = ('b', 'g', 'r') 
+x = 690
+y = 370
+# crop just the archer fish
+newimg = image[y:y+80,x:x+140,:]
+cv2.imshow("Cropped Frame", newimg)
 
 plt.figure()
 plt.title("'Flattened' Color Histogram")
 plt.xlabel("Bins")
 plt.ylabel("# of Pixels") 
-features = [] 
 
-# Loop over each of  the channels in the image 
-# For each channel compute a histogram 
+chans = cv2.split(newimg)
+colors = ('b', 'g', 'r') 
+
+# # Loop over each of  the channels in the image 
+# # For each channel compute a histogram 
 for (chan, color) in zip(chans, colors):
     hist = cv2.calcHist([chan], [0], None, [256], [0, 256])
-    features.extend(hist) 
-    plt.plot(hist, color = color) 
+    plt.plot(hist, color = color, linewidth = 2.0) 
     plt.xlim([0, 256]) 
     
 plt.show()
 cv2.waitKey(0)   
+cv2.destroyAllWindows() 

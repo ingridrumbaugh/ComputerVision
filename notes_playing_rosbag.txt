@@ -24,13 +24,12 @@ rosrun image_view image_view image:=/usb_cam/image_raw
 
 Video will now play on screen 
 
-TAB #4
-($ roscd) 
-in ~/catkin_ws/src/fishtracker_ros
+PLAYING NEW ROSBAG FILES 
+Have TAB #1, TAB #2 
+
+TAB #3 
+in ~/catkin_ws/src/fishtracker_ros/nodes 
 roslaunch fishtracker replay_track_fish_v2.launch 
 
-Note: we also did this: 
-rosrun fishtracker measure_fish_node_v2.py 
-
-TAB #5 
-rqt_graph 
+TAB #4 (Optional, for debugging) 
+~/catkin_ws$ rqt_graph 

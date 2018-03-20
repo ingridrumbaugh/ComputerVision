@@ -8,6 +8,30 @@ import cv2
 Some code taken from: 
 https://stackoverflow.com/questions/43099734/combining-cv2-imshow-with-matplotlib-plt-show-in-real-time
 '''
+ap = argparse.ArgumentParser()
+ap.add_argument("-i", "--image", required = True, help = "Path to the image") 
+args = vars(ap.parse_args()) 
+
+image = cv2.imread(args["image"]) 
+# cv2.imshow("Original", image) 
+
+# Use these coords with 'fish3.png'
+tempx = 690
+tempy = 370 
+# crop just the archerfish 
+newimg = image[tempy:tempy+80, tempx:tempx+140, :]
+# cv2.imshow("Cropped Frame", newimg)
+
+chans = cv2.split(newimg)
+colors = ('b', 'g', 'r') 
+
+# Loop over each of  the channels in the image 
+# For each channel compute a histogram 
+for (chan, color) in zip(chans, colors):
+    hist = cv2.calcHist([chan], [0], None, [256], [0, 256])
+    plt.plot(hist, color = color, linewidth = 2.0) 
+    plt.xlim([0, 256]) 
+
 hist_height = 64
 hist_width  = 256
 nbins       = 32 
@@ -24,18 +48,14 @@ camwidth  = cap.get(3) # float
 camheight = cap.get(4) # float 
 
 fgbg = cv2.createBackgroundSubtractorMOG2()
-# channels for the histogram 
-colors = ('b', 'g', 'r') 
 
 matrix = np.zeros((75, 75), np.float32) 
 green = (0, 255, 0) 
 
-#                    start x/y    end x/y
-
 isFish = True
 
 while(True):
-   
+    cv2.imshow("Original ArcherFish", newimg)
     # redraw the canvas 
     fig.canvas.draw()
     # convert canvas to image 
@@ -70,11 +90,16 @@ while(True):
      
     # sweep rectangle over image 
     # don't print the rectangle! 
-    for y in range(0, height):
-        for x in range(0, width):
-            pt1 = (int(x), int(y))
-            pt2 = (int(x+50), int(y+50))
-            cv2.rectangle(finalframe, pt1, pt2, green)
+
+    # for y in range(0, height):
+    #     for x in range(0, width):
+    #         pt1 = (int(x), int(y))
+    #         pt2 = (int(x+50), int(y+50))
+    #         cv2.rectangle(finalframe, pt1, pt2, green)
+    y = 0
+    x = 0
+    testimg = finalframe[y:y+50,x:x+50,:]
+    cv2.imshow("Cropped Frame", testimg) 
             # testimg = finalframe[y:y+50,x:x+50,:]
             # crop image, do known histogram and compare each rectangle in image
             # if histograms match, then it's a fish 
