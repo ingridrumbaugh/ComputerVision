@@ -8,6 +8,11 @@ import cv2
 Some code taken from: 
 https://stackoverflow.com/questions/43099734/combining-cv2-imshow-with-matplotlib-plt-show-in-real-time
 '''
+hist_height = 64
+hist_width  = 256
+nbins       = 32 
+bin_width
+
 
 fig = plt.figure()
 plt.ion()
@@ -16,6 +21,10 @@ plt.xlabel("Bins")
 plt.ylabel("# of Pixels") 
 
 cap = cv2.VideoCapture(0)
+camwidth  = cap.get(3) # float  
+camheight = cap.get(4) # float 
+
+
 fgbg = cv2.createBackgroundSubtractorMOG2()
 # channels for the histogram 
 colors = ('b', 'g', 'r') 
