@@ -11,8 +11,7 @@ https://stackoverflow.com/questions/43099734/combining-cv2-imshow-with-matplotli
 hist_height = 64
 hist_width  = 256
 nbins       = 32 
-bin_width
-
+bin_width   = hist_width/nbins 
 
 fig = plt.figure()
 plt.ion()
@@ -23,7 +22,6 @@ plt.ylabel("# of Pixels")
 cap = cv2.VideoCapture(0)
 camwidth  = cap.get(3) # float  
 camheight = cap.get(4) # float 
-
 
 fgbg = cv2.createBackgroundSubtractorMOG2()
 # channels for the histogram 
@@ -68,24 +66,33 @@ while(True):
     
     cv2.imshow("Thresh", thresh) 
     # break up channels for the histogram 
-    chans = cv2.split(finalframe) 
-    
+    chans = cv2.split(finalframe)
+     
+    # sweep rectangle over image 
+    # don't print the rectangle! 
     for y in range(0, height):
         for x in range(0, width):
             pt1 = (int(x), int(y))
             pt2 = (int(x+50), int(y+50))
             cv2.rectangle(finalframe, pt1, pt2, green)
+            # testimg = finalframe[y:y+50,x:x+50,:]
+            # crop image, do known histogram and compare each rectangle in image
+            # if histograms match, then it's a fish 
+            
+            # object recognition, match histogram 
+            # cross correlation between histograms 
+            # clean rects in measure_fish_node_v2.py 
         
     # show the image 
     cv2.imshow("Frame", finalframe) 
     
     # Draw the histogram 
+    plt.clf()
     for (chan, color) in zip(chans, colors):
         hist = cv2.calcHist([chan],[0], None, [256], [2,245])
         plt.plot(hist, color = color, linewidth = 2.0) 
         plt.xlim([0,256])
-       
- 
+        
     if cv2.waitKey(10) & 0xFF == ord('q'):
         break 
     
