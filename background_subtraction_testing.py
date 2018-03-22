@@ -4,6 +4,8 @@ from matplotlib import pyplot as plt
 import numpy as np
 import argparse
 import cv2 
+#from deepgaze.color_classification import HistogramColorClassifier 
+
 '''
 Some code taken from: 
 https://stackoverflow.com/questions/43099734/combining-cv2-imshow-with-matplotlib-plt-show-in-real-time
@@ -22,21 +24,27 @@ tempy = 370
 newimg = image[tempy:tempy+80, tempx:tempx+140, :]
 # cv2.imshow("Cropped Frame", newimg)
 
-chans = cv2.split(newimg)
+ogchans = cv2.split(newimg)
 colors = ('b', 'g', 'r') 
 
 # Loop over each of  the channels in the image 
 # For each channel compute a histogram 
-for (chan, color) in zip(chans, colors):
-    hist = cv2.calcHist([chan], [0], None, [256], [0, 256])
-    plt.plot(hist, color = color, linewidth = 2.0) 
+for (chan, color) in zip(ogchans, colors):
+    oghist = cv2.calcHist([chan], [0], None, [256], [0, 256])
+    plt.plot(oghist, color = color, linewidth = 2.0) 
     plt.xlim([0, 256]) 
 
-hist_height = 64
-hist_width  = 256
-nbins       = 32 
-bin_width   = hist_width/nbins 
+    hist_height = 64
+    hist_width  = 256
+    nbins       = 32 
+    bin_width   = hist_width/nbins 
 
+def histogram_intersection(hist_1, hist_2):
+    minima = np.mimimum(hist_1,hist_2)
+    intersection = np.true_divide(np.sum(minima), np.sum(hist_2))
+    return intersection 
+
+# for the active histogram of whole webcam frame 
 fig = plt.figure()
 plt.ion()
 plt.title("'Flattened' Color Histogram")
@@ -87,27 +95,22 @@ while(True):
     cv2.imshow("Thresh", thresh) 
     # break up channels for the histogram 
     chans = cv2.split(finalframe)
-     
+
     # sweep rectangle over image 
     # don't print the rectangle! 
 
-    # for y in range(0, height):
-    #     for x in range(0, width):
-    #         pt1 = (int(x), int(y))
-    #         pt2 = (int(x+50), int(y+50))
-    #         cv2.rectangle(finalframe, pt1, pt2, green)
-    y = 0
-    x = 0
-    testimg = finalframe[y:y+50,x:x+50,:]
-    cv2.imshow("Cropped Frame", testimg) 
-            # testimg = finalframe[y:y+50,x:x+50,:]
+    for y in range(0, height):
+        for x in range(0, width):
+            testimg = finalframe[y:y+80,x:x+140,:]
+            # testchans = cv2.split(testimg)
+            
             # crop image, do known histogram and compare each rectangle in image
             # if histograms match, then it's a fish 
             
             # object recognition, match histogram 
             # cross correlation between histograms 
             # clean rects in measure_fish_node_v2.py 
-        
+
     # show the image 
     cv2.imshow("Frame", finalframe) 
     
@@ -118,11 +121,11 @@ while(True):
         plt.plot(hist, color = color, linewidth = 2.0) 
         plt.xlim([0,256])
         
-    if cv2.waitKey(10) & 0xFF == ord('q'):
-        break 
-    
-cap.release()
-cv2.destroyAllWindows()
+        if cv2.waitKey(10) & 0xFF == ord('q'):
+            break 
+
+            cap.release()
+            cv2.destroyAllWindows()
 
 
 
