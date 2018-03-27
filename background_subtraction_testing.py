@@ -34,7 +34,9 @@ colors = ('b', 'g', 'r')
 # Loop over each of  the channels in the image 
 # For each channel compute a histogram 
 for (chan, color) in zip(ogchans, colors):
+    #                     channels, mask, size, ranges,
     oghist = cv2.calcHist([chan], [0], None, [256], [0, 256])
+    gt_hist, gt_bins = np.histogram(croparchfish, bins = 100, range = [0,256])
     plt.plot(oghist, color = color, linewidth = 2.0) 
     plt.xlim([0, 256]) 
 
@@ -71,7 +73,7 @@ green = (0, 255, 0)
 isFish = True
 
 while(True):
-    cv2.imshow("Original ArcherFish", newimg)
+    cv2.imshow("Original ArcherFish", archfish)
     # redraw the canvas 
     fig.canvas.draw()
     # convert canvas to image 
@@ -100,7 +102,7 @@ while(True):
     finalframe = cv2.bitwise_and(cropped, cropped, mask = fgmask)
     thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2) 
     
-    cv2.imshow("Thresh", thresh) 
+    # cv2.imshow("Thresh", thresh) 
     # break up channels for the histogram 
     chans = cv2.split(finalframe)
 

@@ -31,4 +31,19 @@ cv2.imshow("Canny edge",edged)
 fish = croparchfish.copy()
 cv2.drawContours(fish, cnts, -1, (0, 255, 0), 2) 
 cv2.imshow("contours", fish) 
-cv2.waitKey(0) 
+cv2.waitKey(0)
+
+for (i, c) in enumerate(cnts):
+    # Finds the "enclosing box" that the contour fits into
+    (x, y, w, h) = cv2.boundingRect(c) 
+
+    # Crop the fish from the image using bounding box coords 
+    fish = croparchfish[y:y+h,x:x+w]
+    cv2.imshow("Final cropped fish", fish) 
+    # Initialize mask
+    mask = np.zeros(fish.shape[:2], dtype = "uint8")
+    mask = mask[y:y+h, x:x+w]
+
+    cv2.imshow("Masked Fish", cv2.bitwise_and(fish, fish, mask = mask))
+
+    cv2.waitKey(0) 
