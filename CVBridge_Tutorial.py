@@ -1,19 +1,6 @@
-# CV_BRIDGE TUTORIAL 
-# http://wiki.ros.org/cv_bridge/Tutorials/ConvertingBetweenROSImagesAndOpenCVImagesPython
-
-
-# to convert a ROS image message into a cv::Mat 
-# cv_image = bridge.imgmsg_to_cv2(image_message, desired_encoding="passthrough")
-
-# Example ROS Node 
-# listens to a ROS image message topic,
-# converts images into cv::Mat 
-# draws a circle on it and displays image using opencv 
-# image is then republished over ROS 
-
-from __future__ import print_function 
+#from __future__ import print_function 
 import roslib 
-# roslib.load_manifest('my_package') 
+roslib.load_manifest('ingrid_fishtracker') 
 import sys
 import rospy
 import cv2 
@@ -24,10 +11,10 @@ from cv_bridge import CvBridge, CvBridgeError
 class image_converter:
 
 	def __init__(self):
-		self.image_pub = rospy.Publisher("image_topic_2", Image)
+		self.image_pub = rospy.Publisher("fishes", Image)
 
 		self.bridge = CvBridge()
-		self.image_sub = rospy.Subscriber("image_topic", Image, self.callback) 
+		self.image_sub = rospy.Subscriber("/usb_cam/image_raw", Image, self.callback) 
 
 	def callback(self, data):
 		# try/catch to catch conversion errors 
@@ -50,7 +37,7 @@ class image_converter:
 
 def main(args):
 	ic = image_converter()
-	rospy.init_node('image_converter', anonymous = True) 
+	rospy.init_node('fish_image_converter', anonymous = True) 
 	try:
 		rospy.spin()
 	except KeyboardInterrupt:
