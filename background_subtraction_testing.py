@@ -47,7 +47,7 @@ nbins       = 32
 bin_width   = hist_width/nbins 
 
 def histogram_intersection(hist_1, hist_2):
-    minima = np.mimimum(hist_1,hist_2)
+    minima = np.minimum(hist_1,hist_2)
     intersection = np.true_divide(np.sum(minima), np.sum(hist_2))
     return intersection 
 
@@ -66,9 +66,6 @@ cap = cv2.VideoCapture(0)
 camwidth  = cap.get(3) # float  
 camheight = cap.get(4) # float 
 
-ret, frame = cap.read() 
-height, width, channels = frame.shape
-
 # Background subtractor 
 fgbg = cv2.createBackgroundSubtractorMOG2()
 isFish = True
@@ -76,7 +73,8 @@ isFish = True
 # For each frame while webcam is active 
 while(True):
     # Show the original image 
-    cv2.imshow("Original ArcherFish", archfish)
+    # cv2.imshow("Original ArcherFish", archfish)
+
     # redraw the canvas 
     fig2.canvas.draw()
     # convert canvas to image 
@@ -85,8 +83,10 @@ while(True):
     # img is rgb, conver to opencv bgr 
     img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
 
-    cv2.imshow("Plot",img) 
+    # cv2.imshow("Plot",img) 
 
+    ret, frame = cap.read() 
+    height, width, channels = frame.shape
     # dimensions for cropping the image 
     starty = height/8
     endy   = (7*height)/8
@@ -103,32 +103,41 @@ while(True):
     finalframe = cv2.bitwise_and(cropped, cropped, mask = fgmask)
     thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2) 
     
+    #cv2.imshow("thresh", thresh)
     chans = cv2.split(finalframe)
 
     # sweep rectangle over image 
     # don't print the rectangle! 
 
-    for y in range(0, height):
-        for x in range(0, width):
+    for y in range(0, 30, height):
+        for x in range(0, 30, width):
             testimg = finalframe[y:y+80,x:x+140,:]
             testchans = cv2.split(testimg)
-            
+            for (chan, color) in zip(chans, colors):
+                test_hist, test_bins = np.histogram(chan, bins = 100, range = [0,256])
+            intersection = histogram_intersection(gt_hist, test_hist)
+            print("Intersection Value: "+str(intersection))
+            if (intersection >= 0.7):
+                isFish = True
+                cv2.imshow("Fish Found", testimg)
+                print("Fish found!")
+
     # show the image 
     cv2.imshow("Frame", finalframe) 
     
     # Draw the histogram 
     plt.clf()
-
+    '''
     for (chan, color) in zip(chans, colors):
         hist = cv2.calcHist([chan],[0], None, [256], [2,245])
         plt.plot(hist, color = color, linewidth = 2.0) 
         plt.xlim([0,256])
-        
+    '''
     if cv2.waitKey(10) & 0xFF == ord('q'):
             break 
 
-    cap.release()
-    cv2.destroyAllWindows()
+            cap.release()
+            cv2.destroyAllWindows()
 
 
 
