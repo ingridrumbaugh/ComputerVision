@@ -41,18 +41,10 @@ for (chan, color) in zip(ogchans, colors):
     plt.plot(gt_hist, color = color, linewidth = 2.0) 
     plt.xlim([0, 256]) 
 
-hist_height = 64
-hist_width  = 256
-nbins       = 32 
-bin_width   = hist_width/nbins 
-
 def histogram_intersection(hist_1, hist_2):
     minima = np.minimum(hist_1,hist_2)
     intersection = np.true_divide(np.sum(minima), np.sum(hist_2))
     return intersection 
-
-# n bins in comparing histograms     
-comparisonbins = 100 
 
 # for the active histogram of small rectangle in webcam frame 
 fig2 = plt.figure()
