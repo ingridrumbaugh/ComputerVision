@@ -1,0 +1,11 @@
+take 10s of video 
+find a section that Brown's has trouble with 
+
+compare both detectors to ground truth 
+
+can you use a rule-based (heuristic) machine learning algorithm to improve upon a haar classifier. 
+
+
+read more about a haar classifier 
+ 
+rosrun some shit 
