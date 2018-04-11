@@ -12,14 +12,14 @@ https://github.com/mpatacchiola/deepgaze/blob/master/examples/ex_color_classific
 '''
 
 # Import frame with archerfish 
-archfish = cv2.imread('fish3.png') 
+archfish = cv2.imread('tinyfish.png') 
 
 # x and y coords where archerfish is in image 
 tempx = 690
 tempy = 370 
 
 # crop just the archerfish 
-croparchfish = archfish[tempy:tempy+80, tempx:tempx+140, :]
+croparchfish = archfish
 
 # split ground truth image into channels 
 ogchans = cv2.split(croparchfish)
