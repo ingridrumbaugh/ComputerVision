@@ -1,0 +1,29 @@
+Notes 4/17/18
+
+Multiple gt histograms - run comparison w each gt then if any match it's fish 
+
+if multiple boxes within certain radius - draw one box  
+(coords) --> cluster them into 1 rect 
+
+
+B = [x,y,x2,y2]
+for k in range (0, len(B))
+    newx, newy = B[k], B[k+1] 
+    for loop: (thru B again) 
+        loop thru rest and calc distance 
+        if others @ location, delete 
+
+print dimensions of tinyfish - MAKE SURE DIVISIBLE BY 8 
+convert image to grayscale 
+
+histogram of gradient 
+(partials / kernel over image) 
+slide kernel over image 
+edge direction is arctan of k1/k2
+histogram of oriented gradients (HOG) 
+xSobel and ySobel spatial gradient (Vector derivative)
+
+Trying to find dir of edge then take histogram of edges 
+
+TO DO
+look @ histograms of all boxes in 0.8 intersection 

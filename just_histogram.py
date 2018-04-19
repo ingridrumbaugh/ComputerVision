@@ -4,8 +4,10 @@ import numpy as np
 import argparse
 import cv2 
 
-realframe = cv2.imread('actualframe.png')
+realframe = cv2.imread('tinyfish.png')
 framechannels = cv2.split(realframe)
+height, width, channs = realframe.shape
+print("Height of Tiny Fish: "+str(height)+"  Width of Tiny Fish: "+str(width))
 colors = ('b', 'g', 'r')
 
 plt.figure()

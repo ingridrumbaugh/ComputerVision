@@ -35,10 +35,17 @@ for y in range(0, height-32, 5):
         intersection = histogram_intersection(gt_hist, test_hist)
         #print("Intersection Value: "+str(intersection))
         #print("X: "+str(x)+"Y: "+str(y))
-        
-        if (intersection >= 0.9):
+        # iterator = 0
+        if (intersection >= 0.8):
+            # iterator = iterator+1
             print("Fish found at: "+str(x)+" , "+str(y))
             cv2.rectangle(realframe,(x,y),(x+40, y+40), (0,255,0),3)
+            # if (iterator == 2):
+            #     test = realframe[y:y+40, x:x+40, :]
+            #     img1 = test.copy()
+            #     cv2.imwrite('Rect2_08.png', img1)
 #cv2.rectangle(realframe,(0, 100), (40, 40), (0,255,0),3)
+
 cv2.imshow("Frame", realframe)
+
 cv2.waitKey(0)
