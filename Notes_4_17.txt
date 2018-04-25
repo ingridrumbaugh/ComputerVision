@@ -6,6 +6,10 @@ if multiple boxes within certain radius - draw one box
 (coords) --> cluster them into 1 rect 
 
 
+arr = {}
+for x in xs:
+    arr[x.index] = x
+
 B = [x,y,x2,y2]
 for k in range (0, len(B))
     newx, newy = B[k], B[k+1] 
